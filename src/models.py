@@ -31,7 +31,6 @@ class Characters(Base):
     birth_year = Column(String(250), nullable=True)
     gender = Column(String(250), nullable=True)
     name = Column(String(250), nullable=False)
-    fave_characters = relationship ('Fave_characters', backref= 'user', lazy=True)
 
 class Planets(Base):
     __tablename__ = 'planets'
@@ -46,21 +45,24 @@ class Planets(Base):
     terrain = Column(String(250), nullable=False)
     surface_water = Column(Integer, nullable=False)
     name = Column(Integer, nullable=False)
-    fav_planets = relationship ('Fave_planets', backref= 'user', lazy=True)
 
 class Fave_planets(Base):
     __tablename__ = "fave_planets"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship (User, backref= 'user', lazy=True)
     planet_id = Column (Integer, ForeignKey('planets.id'))
+    planet = relationship (Planets, backref= 'planets', lazy=True)
 
 class Fave_characters(Base):
     __tablename__ = "fave_characters"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship (User, backref= 'user', lazy=True)
     character_id = Column(Integer, ForeignKey('characters.id'))
+    character = relationship (Characters, backref= 'characters', lazy=True)
 
 
     def to_dict(self):
